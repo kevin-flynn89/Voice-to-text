@@ -1,0 +1,1 @@
+{"name":"voicetotext-local","version":"3.0.0","private":true,"type":"module","scripts":{"dev":"vite","build":"vite build","preview":"vite preview"},"dependencies":{"@huggingface/transformers":"3.8.1","vite":"7.0.6"}}
