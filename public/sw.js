@@ -68,3 +68,29 @@ self.addEventListener("fetch", (event) => {
     }
   })());
 });
+
+self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") return;
+
+  const url = new URL(event.request.url);
+
+  if (url.origin !== self.location.origin) return;
+
+  event.respondWith(
+    fetch(event.request).catch(async () => {
+      const cached = await caches.match(event.request);
+      if (cached) return cached;
+
+      if (event.request.mode === "navigate") {
+        const root = new URL("./", self.registration.scope);
+        const page = await caches.match(root.href);
+
+        if (page) return page;
+      }
+
+      return new Response("Risorsa non disponibile offline", {
+        status: 503
+      });
+    })
+  );
+});
